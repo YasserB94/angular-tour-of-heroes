@@ -79,7 +79,51 @@ export interface Hero {
 
 #### Showing the HeroDetailComponent
 - ```<app-hero-detail [hero]="selectedHero"></app-hero-detail>```
-
+***
 ### Add Services
 - Components shouldn't fetch or save data directly and they certainly shouldn't knowingly present fake data. They should focus on presenting data and delegate data access to a service.
 - **Services are a great way to share information among classes that _don't know_ each other**
+
+#### @Injectable() services
+- the @Injectable() decorator marks the class as one that participates in the dependency injection system.
+- The @Injectable() decorator accepts a metadata object for the service, the same way the @Component() decorator did for your component classes.
+
+#### Getting Data
+- Removing data access from components means you can change your mind about the implementation anytime, without touching any components. They don't know how the service works.
+
+#### Providing the Data
+- By default, ng generate service registers a provider with the root injector for your service by including provider metadata, that's providedIn: 'root' in the @Injectable() decorator.
+
+- When you provide the service at the root level, Angular creates a single, shared instance of HeroService 
+
+#### Calling the data in ngOnInit()
+- Reserve the constructor for minimal initialization such as wiring constructor parameters to properties. The constructor shouldn't do anything. It certainly shouldn't call a function that makes HTTP requests to a remote server as a real data service would.
+
+
+#### Observable data
+- Observable is one of the key classes in the RxJS library.
+
+-If getHeroes() can't return immediately with hero data, it shouldn't be synchronous, because that would block the browser as it waits to return data.
+
+#### Subscribing to the observable
+- Observable.subscribe() is the critical difference.
+
+#### Adding a message Service
+- Within the messages component
+    - The messageService property must be public because you're going to bind to it in the template.
+- Angular only binds to public component properties.
+
+#### Adding messages to hero service
+-  This helps when you get to the next section on Routing.
+***
+### Adding Navigation
+
+#### Adding the AppRoutingModule
+- In Angular, the best practice is to load and configure the router in a separate, top-level module. The router is dedicated to routing and imported by the root AppModule.
+- ```ng generate module app-routing --flat --module=app```
+- ```--flat	Puts the file in src/app instead of its own directory.```
+- ```--module=app	Tells ng generate to register it in the imports array of the AppModule.```
+
+- First, the app-routing.module.ts file imports RouterModule and Routes so the application can have routing capability.
+
+- The next import  gives the Router somewhere to go once you configure the routes.
