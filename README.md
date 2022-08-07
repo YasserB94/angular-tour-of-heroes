@@ -170,5 +170,66 @@ Routing makes more sense when your application has more than one view, yet the T
 
 #### Find the way Back
 - The location service's `back()` method allows to easely let the user go back to the previous route.
-
+***
 ### Getting Data from a server
+Right now the tutorial app gets data from a file, this part simulates getting data from a server using HTTP
+
+#### Enabling HTTP
+- HttpClient is Angular's mechanism for communicating with a remote server over HTTP.
+- Make HttpClient available everywhere in the application in two steps. First, add it to the root AppModule by importing it from @angular/common/http;
+- Next, still in the AppModule, add HttpClientModule to the imports array
+
+#### Simulating the Data server
+By using the In-memory Web API, you won't have to set up a server to learn about HttpClient.
+- ` npm install angular-in-memory-web-api --save`
+
+#### Heroes and HTTP
+- All HttpClient methods return an RxJS Observable of something.
+- In general, an observable can return more than one value over time. An observable from HttpClient always emits a single value and then completes, never to emit again.
+- HttpClient.get() returns the body of the response as an untyped JSON object by default. Applying the optional type specifier, `<Hero[]>` , adds TypeScript capabilities, which reduce errors during compile time.
+
+- Other APIs may bury the data that you want within an object. You might have to dig that data out by processing the Observable result with the RxJS map() operator.
+
+#### Error handling
+Things go wrong, especially when you're getting data from a remote server.
+- To catch errors, you "pipe" the observable result from http.get() through an RxJS catchError() operator.
+- The catchError() operator intercepts an Observable that failed. The operator then passes the error to the error handling function.
+
+#### Update heroes
+Edit a hero's name in the hero detail view. As you type, the hero name updates the heading at the top of the page, yet when you click Go back, your changes are lost.
+
+If you want changes to persist, you must write them back to the server.
+
+- The HttpClient.put() method takes three parameters:
+
+    - The URL
+    - The data to update, which is the modified hero in this case
+    Options
+- The heroes web API expects a special header in HTTP save requests.
+
+#### Adding a Hero
+- It calls HttpClient.post() instead of put()
+- It expects the server to create an id for the new hero, which it returns in the `Observable<Hero>` to the caller
+
+#### Deleting a hero
+- Although the component delegates hero deletion to the HeroService, it remains responsible for updating its own list of heroes. The component's delete() method immediately removes the hero-to-delete from that list, anticipating that the HeroService succeeds on the server.;
+
+-If you neglect to subscribe(), the service can't send the delete request to the server. As a rule, an Observable does nothing until something subscribes.
+
+#### Chaining by name
+-  chain Observable operators together so you can reduce the number of similar HTTP requests to consume network bandwidth economically.
+
+- AsyncPipe
+    - The *ngFor repeats hero objects. Notice that the *ngFor iterates over a list called heroes$, not heroes. The $ is a convention that indicates heroes$ is an Observable, not an array.
+    - Since *ngFor can't do anything with an Observable, use the pipe | character followed by async. This identifies Angular's AsyncPipe and subscribes to an Observable automatically so you won't have to do so in the component class.
+
+- searchTerms RxJS Subject
+    - A Subject is both a source of observable values and an Observable itself. You can subscribe to a Subject as you would any Observable.
+    - You can also push values into that Observable by calling its next(value) method as the search() method does.
+- Chaining RxJS operators
+    - Passing a new search term directly to the searchHeroes() after every user keystroke creates excessive HTTP requests, which taxes server resources and burning through data plans.
+
+    - With the switchMap operator, every qualifying key event can trigger an HttpClient.get() method call. Even with a 300 ms pause between requests, you could have many HTTP requests in flight and they may not return in the order sent.
+    - switchMap() preserves the original request order while returning only the observable from the most recent HTTP method call. Results from prior calls are canceled and discarded
+        - Canceling a previous searchHeroes() Observable doesn't actually cancel a pending HTTP request. Unwanted results are discarded before they reach your application code.
+    - Remember that the component class doesn't subscribe to the heroes$ observable. That's the job of the AsyncPipe in the template.
