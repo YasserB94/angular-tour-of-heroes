@@ -127,3 +127,48 @@ export interface Hero {
 - First, the app-routing.module.ts file imports RouterModule and Routes so the application can have routing capability.
 
 - The next import  gives the Router somewhere to go once you configure the routes.
+
+- Notice that the CommonModule references and declarations array are unnecessary, so are no longer part of AppRoutingModule.
+
+#### Routes
+The next part of the file is where you configure your routes. Routes tell the Router which view to display when a user clicks a link or pastes a URL into the browser address bar.
+- A typical Angular Route has two properties:
+    - path	A string that matches the URL in the browser address bar.
+    - component	The component that the router should create when navigating to this route.
+
+#### RouterModule.forRoot()
+- The @NgModule metadata initializes the router and starts it listening for browser location changes.
+- The method is called forRoot() because you configure the router at the application's root level. The forRoot() method supplies the service providers and directives needed for routing, and performs the initial navigation based on the current browser URL.
+
+#### Add RouterOutlet
+- The `<router-outlet>` tells the router where to display routed views.
+- The RouterOutlet is one of the router directives that became available to the AppComponent because AppModule imports AppRoutingModule which exported RouterModule. The ng generate command you ran at the start of this tutorial added this import because of the --module=app flag. If you didn't use the ng generate command to create app-routing.module.ts, import AppRoutingModule into app.module.ts and add it to the imports array of the NgModule.
+
+#### Add a navigation link using routerLink
+- `<a routerLink="/heroes">Heroes</a>`
+- A routerLink attribute is set to "/heroes", the string that the router matches to the route to HeroesComponent. The routerLink is the selector for the RouterLink directive that turns user clicks into router navigations. It's another of the public directives in the RouterModule.
+
+#### Adding A deshboard view
+Routing makes more sense when your application has more than one view, yet the Tour of Heroes application has only the heroes view.
+
+#### Adding A default route to the router
+- When the application starts, the browser's address bar points to the web site's root. That doesn't match any existing route so the router doesn't navigate anywhere. The space below the <router-outlet> is blank.
+
+#### Adding the detail route
+- A URL like ~/detail/11 would be a good URL for navigating to the Hero Detail view of the hero whose id is 11.
+- `{ path: 'detail/:id', component: HeroDetailComponent },`
+- The colon : character in the path indicates that :id is a placeholder for a specific hero id.
+
+#### Routable Component
+- The ActivatedRoute holds information about the route to this instance
+- The location is an Angular service for interacting with the browser. This service lets you navigate back to the previous view.
+
+#### Extracting the route paramters
+- The route.snapshot is a static image of the route information shortly after the component was created.
+- The paramMap is a dictionary of route parameter values extracted from the URL.
+- Route parameters are always strings. The JavaScript Number function converts the string to a number, 
+
+#### Find the way Back
+- The location service's `back()` method allows to easely let the user go back to the previous route.
+
+### Getting Data from a server
