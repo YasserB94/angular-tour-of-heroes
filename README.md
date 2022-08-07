@@ -1,27 +1,45 @@
-# TourOfHeroes
+# Tour of Heroes
+This repository contains my app following along the official angular tutorial.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.1.
+## How to use the app ?
+Need to have:
+    - Node.js
+    - npm package manager
+    - Angular CLI
 
-## Development server
+Clone this repository, navigate to it in the console and run ```ng serve --open``` to serve it locally and in the browser.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## My Notes per chapter:
 
-## Code scaffolding
+### Create a project
+- ng new installs the necessary npm packages and other dependencies that Angular requires. This can take a few minutes.
+- ng new also creates the following workspace and starter project files
+    - A new workspace, with a root directory
+    - An initial skeleton application project in the src/app subdirectory
+    - Related configuration files
+- The ng serve command
+    - Builds the application
+    - Starts the development server
+    - Watches the source files
+    - Rebuilds the application as you make changes
+#### Adding application styles
+- src/styles.css contains application-wide styling to keep consistency.
+***
+### The Hero Editor
+- @Component is a decorator function that specifies the Angular metadata for the component.
+- The ngOnInit() is a lifecycle hook. Angular calls ngOnInit() shortly after creating a component. It's a good place to put initialization logic.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+#### Show the HeroesComponent View
+- To display the HeroesComponent, you must add it to the template of the shell AppComponent.
+- Remember that app-heroes is the element selector
+- `<app-heroes></app-heroes>`
 
-## Build
+#### Create a Hero interface
+- In it's own file, for this tutorial: /src/app/hero.ts
+```
+export interface Hero {
+  id: number;
+  name: string;
+}
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
